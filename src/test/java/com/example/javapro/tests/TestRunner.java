@@ -8,15 +8,12 @@ import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class TestRunner {
     public static void runTests(Class<?> testClass) {
         try {
-            // Проверка аннотаций BeforeSuite и AfterSuit
             validateSuiteAnnotations(testClass);
 
-            // Создаем экземпляр тестового класса
             Object testInstance = testClass.getDeclaredConstructor().newInstance();
 
             runBeforeSuite(testClass, testInstance);
@@ -75,7 +72,7 @@ public class TestRunner {
                 .filter(m -> m.isAnnotationPresent(Test.class))
                 .sorted(Comparator.comparingInt((Method m) ->
                         m.getAnnotation(Test.class).priority()).reversed())
-                .collect(Collectors.toList());
+                .toList();
 
         for (Method testMethod : testMethods) {
             runBeforeAfterTest(testClass, testInstance, BeforeTest.class);
