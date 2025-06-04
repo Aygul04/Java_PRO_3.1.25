@@ -33,11 +33,11 @@ public class StreamTasks {
         System.out.println("3-е уникальное наибольшее число: " + thirdUniqueMax);
 
         // Имена 3 самых старших инженеров
-        List<String> top3Engineers = employees.stream().filter(e -> e.getPosition().equals("Инженер")).sorted(Comparator.comparingInt(Employee::getAge).reversed()).limit(3).map(Employee::getName).toList();
+        List<String> top3Engineers = employees.stream().filter(e -> e.position().equals("Инженер")).sorted(Comparator.comparingInt(Employee::age).reversed()).limit(3).map(Employee::name).toList();
         System.out.println("Топ-3 инженеров по возрасту: " + top3Engineers);
 
         // Средний возраст инженеров
-        double avgAge = employees.stream().filter(e -> e.getPosition().equals("Инженер")).mapToInt(Employee::getAge).average().orElse(0);
+        double avgAge = employees.stream().filter(e -> e.position().equals("Инженер")).mapToInt(Employee::age).average().orElse(0);
         System.out.println("Средний возраст инженеров: " + avgAge);
 
         // Самое длинное слово
@@ -58,24 +58,11 @@ public class StreamTasks {
     }
 
 
-    static class Employee {
-        private String name;
-        private int age;
-        private String position;
-
-        public Employee(String name, int age, String position) {
-            this.name = name;
-            this.age = age;
-            this.position = position;
-        }
-
-        public String getName() { return name; }
-        public int getAge() { return age; }
-        public String getPosition() { return position; }
+    record Employee(String name, int age, String position) {
 
         @Override
-        public String toString() {
-            return name + " (" + age + ", " + position + ")";
+            public String toString() {
+                return name + " (" + age + ", " + position + ")";
+            }
         }
-    }
 }
