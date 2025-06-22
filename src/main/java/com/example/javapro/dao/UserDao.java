@@ -49,7 +49,7 @@ public class UserDao {
                         resultSet.getString("username")
                 );
             } else {
-                return null;
+                throw  new SQLException("User not found");
             }
         }
     }
