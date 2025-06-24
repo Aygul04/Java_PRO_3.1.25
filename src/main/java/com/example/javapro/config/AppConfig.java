@@ -12,7 +12,6 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import javax.sql.DataSource;
 
 @Configuration
-@ComponentScan(basePackages = "com.example.javapro")
 @PropertySource("classpath:application.properties")
 
 public class AppConfig {

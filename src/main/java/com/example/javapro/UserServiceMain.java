@@ -4,13 +4,15 @@ import com.example.javapro.config.AppConfig;
 import com.example.javapro.model.User;
 import com.example.javapro.service.UserService;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.ComponentScan;
 
 import java.sql.SQLException;
+@ComponentScan
 public class UserServiceMain {
 
     public static void main(String[] args) {
         AnnotationConfigApplicationContext context =
-                new AnnotationConfigApplicationContext(AppConfig.class);
+                new AnnotationConfigApplicationContext(UserServiceMain.class);
 
         UserService userService = context.getBean(UserService.class);
 
