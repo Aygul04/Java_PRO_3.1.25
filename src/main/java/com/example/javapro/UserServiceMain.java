@@ -1,22 +1,22 @@
 package com.example.javapro;
 
-import com.example.javapro.config.AppConfig;
 import com.example.javapro.model.User;
 import com.example.javapro.service.UserService;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 
-import java.sql.SQLException;
-@ComponentScan
+@SpringBootApplication
 public class UserServiceMain {
 
     public static void main(String[] args) {
-        AnnotationConfigApplicationContext context =
-                new AnnotationConfigApplicationContext(UserServiceMain.class);
+        SpringApplication.run(UserServiceMain.class, args);
+    }
 
-        UserService userService = context.getBean(UserService.class);
-
-        try {
+    @Bean
+    public CommandLineRunner commandLineRunner(UserService userService) {
+        return args -> {
             // Создание пользователей
             User user1 = userService.createUser("Max");
             User user2 = userService.createUser("Tom");
@@ -40,13 +40,8 @@ public class UserServiceMain {
             System.out.println("After deletion, all users:");
             userService.getAllUsers().forEach(System.out::println);
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            context.close();
-        }
+        };
     }
-
 
 }
 

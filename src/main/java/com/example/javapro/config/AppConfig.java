@@ -1,42 +1,29 @@
 package com.example.javapro.config;
 
 
-import com.zaxxer.hikari.HikariDataSource;
-import org.springframework.beans.factory.annotation.Value;
+import org.postgresql.ds.PGSimpleDataSource;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 import javax.sql.DataSource;
 
 @Configuration
-@PropertySource("classpath:application.properties")
-
 public class AppConfig {
-    @Value("${spring.datasource.url}")
-    private String dbUrl;
-    @Value("${spring.datasource.username}")
-    private String dbUsername;
-    @Value("${spring.datasource.password}")
-    private String dbPassword;
-
-
     @Bean
-    public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
-        return new PropertySourcesPlaceholderConfigurer();
+    @ConfigurationProperties("application.main-datasource")
+    public DataSourceProperties datasourceProperties() {
+        return new DataSourceProperties();
     }
 
-
     @Bean
-    public DataSource dataSource() {
-
-        HikariDataSource dataSource = new HikariDataSource();
-        dataSource.setJdbcUrl(dbUrl);
-        dataSource.setUsername(dbUsername);
-        dataSource.setPassword(dbPassword);
-
+    public DataSource mainDataSource() {
+        final var prop = datasourceProperties();
+        final var dataSource = new PGSimpleDataSource();
+        dataSource.setUrl(prop.getUrl());
+        dataSource.setUser(prop.getUsername());
+        dataSource.setPassword(prop.getPassword());
         return dataSource;
     }
 }

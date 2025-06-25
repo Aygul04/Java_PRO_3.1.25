@@ -1,41 +1,45 @@
 package com.example.javapro.service;
 
 
-import com.example.javapro.dao.UserDao;
 import com.example.javapro.model.User;
+import com.example.javapro.repo.UserRepo;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
-import java.util.List;
 
 @Service
 public class UserService {
-    private final UserDao userDao;
+    private final UserRepo userRepo;
 
     @Autowired
-    public UserService(UserDao userDao) {
-        this.userDao = userDao;
+    public UserService(UserRepo userRepo) {
+        this.userRepo = userRepo;
     }
 
+    @Transactional
     public User createUser(String username) throws SQLException {
-        User user = new User(null, username);
-        return userDao.create(user);
+        User user = new User();
+        user.setUsername(username);
+        return userRepo.save(user);
     }
 
     public User getUserById(Long id) throws SQLException {
-        return userDao.findById(id);
+        return userRepo.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
     }
 
-    public List<User> getAllUsers() throws SQLException {
-        return userDao.findAll();
+    public Iterable<User> getAllUsers() throws SQLException {
+        return userRepo.findAll();
     }
 
+    @Transactional
     public void updateUser(User user) throws SQLException {
-        userDao.update(user);
+        userRepo.save(user);
     }
 
+    @Transactional
     public void deleteUser(Long id) throws SQLException {
-        userDao.delete(id);
+        userRepo.deleteById(id);
     }
 }
