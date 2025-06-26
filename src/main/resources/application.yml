@@ -1,4 +1,8 @@
 spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5433/postgres
+    username: postgres
+    password: postgres
   liquibase:
     url: jdbc:postgresql://localhost:5433/postgres
     user: postgres
@@ -6,10 +10,4 @@ spring:
     change-log: classpath:changelog/db.changelog-master.xml
   jpa:
     open-in-view: false
-application:
-  mainDatasource:
-    url: jdbc:postgresql://localhost:5433/postgres
-    username: postgres
-    password: postgres
-    maxPoolSize: 5
 

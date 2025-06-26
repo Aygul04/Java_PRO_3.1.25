@@ -1,19 +1,12 @@
-package com.example.javapro;
+package com.example.javapro.service;
 
 import com.example.javapro.model.User;
-import com.example.javapro.service.UserService;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
 
-@SpringBootApplication
+@Component
 public class UserServiceMain {
-
-    public static void main(String[] args) {
-        SpringApplication.run(UserServiceMain.class, args);
-    }
-
     @Bean
     public CommandLineRunner commandLineRunner(UserService userService) {
         return args -> {
@@ -42,6 +35,4 @@ public class UserServiceMain {
 
         };
     }
-
 }
-
