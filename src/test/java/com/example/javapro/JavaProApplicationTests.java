@@ -8,9 +8,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class JavaProApplicationTests {
 
-	@Test
-	void contextLoads() {
-		TestRunner.runTests(TestClass.class);
-	}
+    @Test
+    void contextLoads() {
+        TestRunner.runTests(TestClass.class);
+    }
 
 }

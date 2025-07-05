@@ -1,8 +1,8 @@
 package com.example.javapro.service;
 
+import com.example.javapro.mapper.ProductMapper;
 import com.example.javapro.model.Product;
 import com.example.javapro.model.ProductDto;
-import com.example.javapro.model.ProductResponseDto;
 import com.example.javapro.model.User;
 import com.example.javapro.repo.ProductRepository;
 import com.example.javapro.repo.UserRepo;
@@ -17,18 +17,20 @@ import java.util.stream.Collectors;
 public class ProductService {
     private final ProductRepository productRepository;
     private final UserRepo userRepository;
+    private final ProductMapper productMapper;
 
-    public ProductService(ProductRepository productRepository, UserRepo userRepository) {
+    public ProductService(ProductRepository productRepository, UserRepo userRepository, ProductMapper productMapper) {
         this.productRepository = productRepository;
         this.userRepository = userRepository;
+        this.productMapper = productMapper;
     }
 
     @Transactional
-    public ProductResponseDto createProduct(ProductDto productDto) {
+    public ProductDto createProduct(ProductDto productDto) {
         User user = userRepository.findById(productDto.getUserId())
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
 
-        Product product = new Product();
+        Product product = productMapper.toEntity(productDto);
         product.setAccountNumber(productDto.getAccountNumber());
         product.setBalance(productDto.getBalance());
         product.setProductType(productDto.getProductType());
@@ -36,28 +38,17 @@ public class ProductService {
 
         Product savedProduct = productRepository.save(product);
 
-        return toDto(savedProduct);
+        return productMapper.toDto(savedProduct);
     }
 
-    public List<ProductResponseDto> getUserProducts(Long userId) {
+    public List<ProductDto> getUserProducts(Long userId) {
         return productRepository.findByUserId(userId).stream()
-                .map(this::toDto)
+                .map(productMapper::toDto)
                 .collect(Collectors.toList());
     }
 
-    public ProductResponseDto getProduct(Long productId) {
-        Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new EntityNotFoundException("Product not found"));
-        return toDto(product);
+    public ProductDto getProduct(Long productId) {
+        return productRepository.findById(productId).map(productMapper::toDto).orElseThrow(() -> new EntityNotFoundException("Product not found"));
     }
 
-    private ProductResponseDto toDto(Product product) {
-        return new ProductResponseDto(
-                product.getId(),
-                product.getAccountNumber(),
-                product.getBalance(),
-                product.getProductType(),
-                product.getUser().getId()
-        );
-    }
 }

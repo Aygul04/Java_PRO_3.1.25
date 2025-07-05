@@ -49,7 +49,7 @@ public class UserServiceMain implements CommandLineRunner {
         logger.info("After deletion, all users:");
         userService.getAllUsers().forEach(user -> logger.info(String.valueOf(user)));
 
-        ProductDto product1 = new ProductDto("40817810099910001111",
+        ProductDto product1 = new ProductDto(1L, "40817810099910001111",
                 new BigDecimal("1000.00"), ProductType.ACCOUNT, 1L);
         productService.createProduct(product1);
         logger.info("Creating products {}", product1);
