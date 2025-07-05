@@ -2,6 +2,7 @@ package com.example.javapro.controller;
 
 import com.example.javapro.model.Product;
 import com.example.javapro.model.ProductDto;
+import com.example.javapro.model.ProductResponseDto;
 import com.example.javapro.service.ProductService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/products")
+@RequestMapping("/api/v1/products")
 
 public class ProductController {
     private final ProductService productService;
@@ -24,17 +25,17 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<Product> createProduct(@RequestBody ProductDto productDto) {
-        return ResponseEntity.ok(productService.createProduct(productDto));
+    public ProductResponseDto createProduct(@RequestBody ProductDto productDto) {
+        return productService.createProduct(productDto);
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Product>> getUserProducts(@PathVariable Long userId) {
-        return ResponseEntity.ok(productService.getUserProducts(userId));
+    public List<ProductResponseDto> getUserProducts(@PathVariable Long userId) {
+        return productService.getUserProducts(userId);
     }
 
     @GetMapping("/{productId}")
-    public ResponseEntity<Product> getProduct(@PathVariable Long productId) {
-        return ResponseEntity.ok(productService.getProduct(productId));
+    public ProductResponseDto getProduct(@PathVariable Long productId) {
+        return productService.getProduct(productId);
     }
 }

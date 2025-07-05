@@ -2,6 +2,7 @@ package com.example.javapro.service;
 
 import com.example.javapro.model.Product;
 import com.example.javapro.model.ProductDto;
+import com.example.javapro.model.ProductResponseDto;
 import com.example.javapro.model.User;
 import com.example.javapro.repo.ProductRepository;
 import com.example.javapro.repo.UserRepo;
@@ -10,6 +11,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -22,7 +24,7 @@ public class ProductService {
     }
 
     @Transactional
-    public Product createProduct(ProductDto productDto) {
+    public ProductResponseDto createProduct(ProductDto productDto) {
         User user = userRepository.findById(productDto.getUserId())
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
 
@@ -32,15 +34,30 @@ public class ProductService {
         product.setProductType(productDto.getProductType());
         product.setUser(user);
 
-        return productRepository.save(product);
+        Product savedProduct = productRepository.save(product);
+
+        return toDto(savedProduct);
     }
 
-    public List<Product> getUserProducts(Long userId) {
-        return productRepository.findByUserId(userId);
+    public List<ProductResponseDto> getUserProducts(Long userId) {
+        return productRepository.findByUserId(userId).stream()
+                .map(this::toDto)
+                .collect(Collectors.toList());
     }
 
-    public Product getProduct(Long productId) {
-        return productRepository.findById(productId)
+    public ProductResponseDto getProduct(Long productId) {
+        Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new EntityNotFoundException("Product not found"));
+        return toDto(product);
+    }
+
+    private ProductResponseDto toDto(Product product) {
+        return new ProductResponseDto(
+                product.getId(),
+                product.getAccountNumber(),
+                product.getBalance(),
+                product.getProductType(),
+                product.getUser().getId()
+        );
     }
 }
