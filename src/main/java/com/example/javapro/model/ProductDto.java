@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductDto {
+    private Long id;
     private String accountNumber;
     private BigDecimal balance;
     private ProductType productType;
