@@ -8,6 +8,11 @@
     <changeSet id="1-init-database-schema.sql" author="AAyzatullova" logicalFilePath="path-independent">
         <sqlFile path="scripts/1-init-database-schema.sql" splitStatements="false" relativeToChangelogFile="true"/>
     </changeSet>
-
+    <changeSet id="2-create-product-table.sql" author="AAyzatullova" logicalFilePath="path-independent">
+        <sqlFile path="scripts/2-create-product-table.sql" splitStatements="false" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="3-alter-table-app_user.sql" author="AAyzatullova" logicalFilePath="path-independent">
+        <sqlFile path="scripts/3-alter-table-app_user.sql" splitStatements="false" relativeToChangelogFile="true"/>
+    </changeSet>
 
 </databaseChangeLog>
