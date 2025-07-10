@@ -26,4 +26,8 @@ public class PaymentService {
 
         return new PaymentResponse("SUCCESS", "Платеж выполнен", UUID.randomUUID().toString());
     }
+
+    public ProductDto getProduct(Long id) {
+        return productClient.getProduct(id);
+    }
 }

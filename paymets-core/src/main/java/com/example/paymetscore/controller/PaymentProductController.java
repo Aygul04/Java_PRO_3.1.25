@@ -4,7 +4,6 @@ import com.example.javapro.model.ProductDto;
 import com.example.paymetscore.dto.PaymentRequest;
 import com.example.paymetscore.dto.PaymentResponse;
 import com.example.paymetscore.service.PaymentService;
-import com.example.paymetscore.service.ProductClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,18 +14,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/payments/products")
 public class PaymentProductController {
-
-    private final ProductClient productClient;
     private final PaymentService paymentService;
 
-    public PaymentProductController(ProductClient productClient, PaymentService paymentService) {
-        this.productClient = productClient;
+    public PaymentProductController(PaymentService paymentService) {
         this.paymentService = paymentService;
     }
 
     @GetMapping("/{productId}")
     public ProductDto getProduct(@PathVariable Long productId) {
-        return productClient.getProduct(productId);
+        return paymentService.getProduct(productId);
     }
 
     @PostMapping("/execute")

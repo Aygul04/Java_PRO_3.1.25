@@ -1,9 +1,8 @@
 package com.example.paymetscore.handler;
 
+import com.example.paymetscore.dto.ErrorResponse;
 import com.example.paymetscore.exception.InsufficientFundsException;
 import com.example.paymetscore.exception.ProductServiceException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -11,19 +10,18 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(ProductServiceException.class)
-    public ResponseEntity<String> handleProductServiceError(ProductServiceException ex) {
-        return ResponseEntity.status(HttpStatus.BAD_GATEWAY)
-                .body("Ошибка при обращении к сервису продуктов: " + ex.getMessage());
+    public ErrorResponse handleProductServiceError(ProductServiceException ex) {
+        return new ErrorResponse("PRODUCT_SERVICE_ERROR",
+                "Ошибка при обращении к сервису продуктов: " + ex.getMessage());
     }
 
     @ExceptionHandler(InsufficientFundsException.class)
-    public ResponseEntity<String> handleFundsError(InsufficientFundsException ex) {
-        return ResponseEntity.badRequest().body(ex.getMessage());
+    public ErrorResponse handleFundsError(InsufficientFundsException ex) {
+        return new ErrorResponse("INSUFFICIENT_FUNDS", ex.getMessage());
     }
 
-
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> handleOtherErrors(Exception ex) {
-        return ResponseEntity.internalServerError().body("Внутренняя ошибка");
+    public ErrorResponse handleOtherErrors(Exception ex) {
+        return new ErrorResponse("INTERNAL_ERROR", "Внутренняя ошибка");
     }
 }
