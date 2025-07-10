@@ -1,0 +1,25 @@
+package com.example.paymetscore.config;
+
+import com.example.paymetscore.properties.RestTemplateProperties;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
+
+@Configuration
+@ConfigurationPropertiesScan
+@EnableConfigurationProperties(RestTemplateProperties.class)
+public class RestTemplateConfig {
+
+    @Bean
+    public RestTemplate paymentClient(RestTemplateProperties paymentClient){
+        return new RestTemplateBuilder()
+                .rootUri(paymentClient.getUrl())
+                .setConnectTimeout(paymentClient.getConnectionTimeout())
+                .setReadTimeout(paymentClient.getReadTimeout()).build();
+
+    }
+}
